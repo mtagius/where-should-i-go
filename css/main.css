@@ -1,0 +1,22 @@
+body {
+    background-color: burlywood;
+}
+
+.main-container {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    text-align: center;
+    background-color: bisque;
+}
+
+.foot {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #efefef;
+    text-align: center;
+}
