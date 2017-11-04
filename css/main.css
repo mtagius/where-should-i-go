@@ -1,15 +1,19 @@
-body {
-    background-color: burlywood;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .main-container {
     position: absolute;
-    width: 80%;
-    height: 80%;
-    left: 10%;
-    top: 10%;
+    width: 90%;
+    left: 5%;
     text-align: center;
-    background-color: bisque;
+    z-index: 999;
+}
+
+#map {
+    height: 100%;
 }
 
 .foot {
@@ -17,6 +21,5 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #efefef;
     text-align: center;
 }
