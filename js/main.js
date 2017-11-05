@@ -6,8 +6,7 @@ function setCopyrightFooter() {
 $(document).ready(function () {
     $("#searchButton").click(function() {
         searchPlaces();
-        $("#searchButton").remove();
-        $("#city").remove();
+        $("#searchContainer").remove();
     });
     $('#city').keypress(function(event){
             var keycode = (event.keyCode ? event.keyCode : event.which);
