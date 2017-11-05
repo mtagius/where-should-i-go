@@ -2,6 +2,7 @@
 var map, infoWindow, center, marker;
 
 function callback(results, status) {
+    console.log("hi");
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
            //createMarker(results[i]);
@@ -10,7 +11,10 @@ function callback(results, status) {
         randomPick = results[Math.floor(Math.random() * results.length)];
         createMarker(randomPick);
         displayMainLocation(randomPick);
-    }
+    }else{
+            console.log('fuck');
+            searchPlaces();
+        }
 }
 
 function generateLink(place) {
