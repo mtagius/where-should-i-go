@@ -1,20 +1,26 @@
 
 var map, center, marker, city;
+var previousPicks = [];
+var failedSearches = 0;
 
 function callback(results, status) {
     console.log("hi");
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-           //createMarker(results[i]);
-           //createPhotoMarker(results[i]);
-        }
         randomPick = results[Math.floor(Math.random() * results.length)];
-        createMarker(randomPick);
-        displayMainLocation(randomPick);
-    }else{
-            console.log('fuck');
+        if(!(previousPicks.includes(randomPick.name)) || failedSearches > 15) {
+            failedSearches = 0;
+            previousPicks.push(randomPick.name);
+            createMarker(randomPick);
+            displayMainLocation(randomPick);
+        } else {
+            console.log('already picked that');
+            failedSearches += 1;
             searchPlaces();
         }
+    } else {
+        console.log('fuck');
+        searchPlaces();
+    }
 }
 
 function generateLink(place) {
@@ -93,7 +99,7 @@ function searchPlaces() {
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
         location: center,
-        radius: 2000,
+        radius: 5000,
         type: [randomPlace]
     }, callback);
     console.log(randomPlace);
