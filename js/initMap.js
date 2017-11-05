@@ -28,13 +28,14 @@ function displayMainLocation(place) {
     //console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
-    $("#results").append("<h2>" + place.name + "</h2>");
-    $("#results").append("<p id='address'>" + place.vicinity + "</p>");
+    $("#results").append("<div id='info'></div>")
+    $("#info").append("<h2>" + place.name + "</h2>");
+    $("#info").append("<p id='address'>" + place.vicinity + "</p>");
     $("#address").wrap('<a target="_blank" href="' + generateLink(place) + '" />');
     try{
-        $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
+        $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 400}) + "'>");
     } catch(err){
-        $("#results").append("This place has no photos yet!");
+        $("#info").append("This place has no photos yet!");
     }
     $("#results").append("<div id='tryAgain'>Pick Another?</div>");
     $("#tryAgain").click(function() {
@@ -93,7 +94,7 @@ function searchPlaces() {
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
         location: center,
-        radius: 2000,
+        radius: 5000,
         type: [randomPlace]
     }, callback);
     console.log(randomPlace);
