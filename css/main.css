@@ -26,7 +26,7 @@ html, body {
     border-width: 3px;
     border-style: solid;
     border-radius: 40px;
-    background-color: greenyellow;
+    background-color: floralwhite;
     text-align: center;
 }
 
@@ -37,7 +37,7 @@ html, body {
     border-width: 3px;
     border-style: solid;
     border-radius: 40px;
-    background-color: greenyellow;
+    background-color: floralwhite;
     text-align: center;
 }
 
@@ -47,7 +47,7 @@ html, body {
     height: 50%;
     left: 20px;
     top: 30%;
-    background-color: rebeccapurple;
+    /*background-color: darkseagreen;*/
 }
 
 .foot {
@@ -63,6 +63,10 @@ h1{
     color: #4D5656;
     font-size: 75px;
     text-shadow: 3px 3px white;
+}
+h2{
+    color: #4D5656;
+    font-family: 'Boogaloo', cursive;
 }
 #copyrightFooter{
     color: white;

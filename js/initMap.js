@@ -25,12 +25,16 @@ function generateLink(place) {
 function displayMainLocation(place) {
     console.log(place.name);
     console.log(place.vicinity);
-    console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
+    //console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
-    $("#results").append("<h1>" + place.name + "</h1>");
+    $("#results").append("<h2>" + place.name + "</h2>");
     $("#results").append("<p id='address'>" + place.vicinity + "</p>");
-    $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
+    try{
+        $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
+    } catch(err){
+        $("#results").append("This place has no photos yet!");
+    }
     $("#address").wrap('<a href="' + generateLink(place) + '" />');
     $("#results").append("<div id='tryAgain'>Pick Another?</div>");
     $("#tryAgain").click(function() {
