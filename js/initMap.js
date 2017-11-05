@@ -25,13 +25,12 @@ function callback(results, status) {
 
 function generateLink(place) {
     name = encodeURIComponent(place.name);
-    return "https://www.google.com/maps/search/?api=1&query=" + name + "&query_place_id=ChIJKxjxuaNqkFQR3CK6O1HNNqY" + place.id;
+    return "https://www.google.com/maps/search/?api=1&query=" + name + "&query_place_id=" + place.id;
 }
 
 function displayMainLocation(place) {
     console.log(place.name);
     console.log(place.vicinity);
-    //console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
     $("#results").append("<h2>" + place.name + "</h2>");
