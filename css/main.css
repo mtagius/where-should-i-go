@@ -41,13 +41,17 @@ html, body {
     text-align: center;
 }
 
+#resultsContainer{
+    
+}
+
 #results {
     position: absolute;
     width: 40%;
     height: 50%;
     left: 20px;
     top: 30%;
-    /*background-color: darkseagreen;*/
+    background-color: darkseagreen;
 }
 
 .foot {
