@@ -58,7 +58,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 function searchPlaces() {
-    var places = ['amusement_park', 'aquarium', 'art_gallery', 'bar', 'bicycle_store', 'book_store', 'bowling_alley', 'campground', 'casino', 'clothing_store', 'department_store', 'library', 'movie_theater', 'museum', 'night_club'];
+    var places = ['amusement_park', 'aquarium', 'art_gallery', 'bar', 'bicycle_store', 'book_store', 'bowling_alley', 'campground', 'casino', 'clothing_store', 'department_store', 'library', 'movie_theater', 'museum', 'night_club', 'park', 'shopping_mall', 'spa', 'zoo'];
     randomPlace = places[Math.floor(Math.random() * places.length)];
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
