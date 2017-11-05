@@ -2,6 +2,7 @@
 var map, center, marker, city;
 
 function callback(results, status) {
+    console.log("hi");
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
            //createMarker(results[i]);
@@ -10,7 +11,10 @@ function callback(results, status) {
         randomPick = results[Math.floor(Math.random() * results.length)];
         createMarker(randomPick);
         displayMainLocation(randomPick);
-    }
+    }else{
+            console.log('fuck');
+            searchPlaces();
+        }
 }
 
 function generateLink(place) {
@@ -21,13 +25,17 @@ function generateLink(place) {
 function displayMainLocation(place) {
     console.log(place.name);
     console.log(place.vicinity);
-    console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
+    //console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
-    $("#results").append("<h1>" + place.name + "</h1>");
+    $("#results").append("<h2>" + place.name + "</h2>");
     $("#results").append("<p id='address'>" + place.vicinity + "</p>");
-    $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
     $("#address").wrap('<a target="_blank" href="' + generateLink(place) + '" />');
+    try{
+        $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
+    } catch(err){
+        $("#results").append("This place has no photos yet!");
+    }
     $("#results").append("<div id='tryAgain'>Pick Another?</div>");
     $("#tryAgain").click(function() {
         $("#results").remove();
@@ -276,7 +284,6 @@ function drawMap() {
 }
 
 function initMap() {
-    center = {lat: 0, lng: 0};
 
     //Try HTML% geolocation
     if (navigator.geolocation) {
