@@ -34,11 +34,11 @@ function displayMainLocation(place) {
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
     $("#results").append("<div id='info'></div>")
-    $("#info").append("<h2>" + place.name + "</h2>");
+    $("#info").append("<h2 id='resultName'>" + place.name + "</h2>");
     $("#info").append("<p id='address'>" + place.vicinity + "</p>");
     $("#address").wrap('<a target="_blank" href="' + generateLink(place) + '" />');
     try{
-        $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 400}) + "'>");
+        $("#results").append("<img class='resultPicture' src='" + place.photos[0].getUrl({'maxWidth': 400, 'maxHeight': 300}) + "'>");
     } catch(err){
         $("#info").append("This place has no photos yet!");
     }
