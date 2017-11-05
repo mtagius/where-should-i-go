@@ -1,5 +1,5 @@
 
-var map, infoWindow, center, marker;
+var map, center, marker, city;
 
 function callback(results, status) {
     console.log("hi");
@@ -30,12 +30,12 @@ function displayMainLocation(place) {
     $("#resultsContainer").append("<div id='results'></div>")
     $("#results").append("<h2>" + place.name + "</h2>");
     $("#results").append("<p id='address'>" + place.vicinity + "</p>");
+    $("#address").wrap('<a target="_blank" href="' + generateLink(place) + '" />');
     try{
         $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
     } catch(err){
         $("#results").append("This place has no photos yet!");
     }
-    $("#address").wrap('<a href="' + generateLink(place) + '" />');
     $("#results").append("<div id='tryAgain'>Pick Another?</div>");
     $("#tryAgain").click(function() {
         $("#results").remove();
@@ -52,17 +52,39 @@ function createMarker(place) {
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(place.name);
-        infoWindow.open(map, this);
+        window.open(generateLink(place), '_blank')
     });
 }
-  
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-                            'Error: The Geolocation service failed.' :
-                            'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
+
+function getCityFromCordinates(latlng) {
+    new google.maps.Geocoder().geocode({'latLng' : latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                var country = null, countryCode = null, city = null, cityAlt = null;
+                var c, lc, component;
+                for (var r = 0, rl = results.length; r < rl; r += 1) {
+                    var result = results[r];
+    
+                    if (!city && result.types[0] === 'locality') {
+                        for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                            component = result.address_components[c];
+    
+                            if (component.types[0] === 'locality') {
+                                city = component.long_name;
+                                break;
+                            }
+                        }
+                    }
+                    if (city) {
+                        break;
+                    }
+                }
+                $("#city").val(city);
+                console.log(city);
+                return city;
+            }
+        }
+    });
 }
 
 function searchPlaces() {
@@ -77,7 +99,48 @@ function searchPlaces() {
     console.log(randomPlace);
 }
 
-function initMap() {
+function searchNewCity() {
+    city = $("#city").val();
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address': city
+    }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            center = {
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng()
+            };
+            console.log(center);
+            map.setCenter(center);
+        } else {
+            alert("City not Found");
+        }
+    });
+}
+
+function geolocationFailed() {
+    city = 'Charlotte';
+    $("#city").val(city);
+    console.log(city);
+    
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address': city
+    }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            center = {
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng()
+            };
+            console.log(center);
+            drawMap();
+        } else {
+            alert("City not Found");
+        }
+    });
+}
+
+function drawMap() {
     var styledMapType = new google.maps.StyledMapType(
         [
           {
@@ -208,8 +271,19 @@ function initMap() {
         {name: 'Go Map'}
     );    
 
-    center = {lat: 0, lng: 0};
-    infoWindow = new google.maps.InfoWindow();
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: center,
+        zoom: 15,
+        mapTypeControlOptions:{
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
+        }
+    });
+    //Associate the styled map with the MapTypeId and set it to display.
+    map.mapTypes.set('styled_map', styledMapType);
+    map.setMapTypeId('styled_map');
+}
+
+function initMap() {
 
     //Try HTML% geolocation
     if (navigator.geolocation) {
@@ -218,23 +292,14 @@ function initMap() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
+            getCityFromCordinates(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
             console.log(center);
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: center,
-                zoom: 15,
-                mapTypeControlOptions:{
-                    mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
-                }
-            });
-            //Associate the styled map with the MapTypeId and set it to display.
-            map.mapTypes.set('styled_map', styledMapType);
-            map.setMapTypeId('styled_map');
-
+            drawMap();
         }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+            geolocationFailed();
         });
     } else {
-        handleLocationError(false, infoWindow, map.getCenter());
+        geolocationFailed();
     }
 }
   
