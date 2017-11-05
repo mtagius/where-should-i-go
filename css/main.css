@@ -25,9 +25,11 @@ html, body {
     padding: 20px;
     border-width: 3px;
     border-style: solid;
+    border-color: #4D5656;
     border-radius: 40px;
     background-color: floralwhite;
     text-align: center;
+    color: #4D5656;
 }
 
 #city {
@@ -40,16 +42,25 @@ html, body {
 }
 
 #tryAgain {
-    width: 250px;
+    width: 150px;
     z-index: 999;
     padding: 20px;
     border-width: 3px;
     border-style: solid;
+    border-color: #4D5656;
     border-radius: 40px;
     background-color: floralwhite;
     text-align: center;
+    color: #4D5656;
 }
 
+#resultsContainer{
+    
+}
+#info {
+    background-color: floralwhite;
+    width: 50%;
+}
 #results {
     position: absolute;
     width: 40%;
