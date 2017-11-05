@@ -22,6 +22,11 @@ function displayMainLocation(place) {
     console.log(place.vicinity);
     console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
     console.log(generateLink(place));
+    $("#resultsContainer").append("<div id='results'></div>")
+    $("#results").append("<h1>" + place.name + "</h1>");
+    $("#results").append("<p>" + place.vicinity + "</p>");
+    $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
+    $("#resultsContainer").wrap('<a href="' + generateLink(place) + '" />')
 }
 
 function createPhotoMarker(place) {

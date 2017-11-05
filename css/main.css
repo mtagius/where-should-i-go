@@ -16,6 +16,15 @@ html, body {
     height: 100%;
 }
 
+#results {
+    position: absolute;
+    width: 40%;
+    height: 50%;
+    left: 20px;
+    top: 30%;
+    background-color: rebeccapurple;
+}
+
 .foot {
     position: absolute;
     right: 0;
