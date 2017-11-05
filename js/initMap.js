@@ -215,12 +215,13 @@ function initMap() {
             //Associate the styled map with the MapTypeId and set it to display.
             map.mapTypes.set('styled_map', styledMapType);
             map.setMapTypeId('styled_map');
-        
+            var places = ['amusement_park', 'aquarium', 'art_gallery', 'bar', 'bicycle_store', 'book_store', 'bowling_alley', 'campground', 'casino', 'clothing_store', 'department_store', 'library', 'movie_theater', 'museum', 'night_club'];
+            randomPlace = places[Math.floor(Math.random() * places.length)];
             var service = new google.maps.places.PlacesService(map);
             service.nearbySearch({
                 location: center,
                 radius: 2000,
-                type: ['restaurant']
+                type: [randomPlace]
             }, callback);
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
