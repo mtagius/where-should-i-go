@@ -1,13 +1,14 @@
 
-var map, infoWindow;
+var map, infoWindow, center, marker;
 
 function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
-           createMarker(results[i]);
+           //createMarker(results[i]);
            //createPhotoMarker(results[i]);
         }
         randomPick = results[Math.floor(Math.random() * results.length)];
+        createMarker(randomPick);
         displayMainLocation(randomPick);
     }
 }
@@ -24,27 +25,20 @@ function displayMainLocation(place) {
     console.log(generateLink(place));
     $("#resultsContainer").append("<div id='results'></div>")
     $("#results").append("<h1>" + place.name + "</h1>");
-    $("#results").append("<p>" + place.vicinity + "</p>");
+    $("#results").append("<p id='address'>" + place.vicinity + "</p>");
     $("#results").append("<img src='" + place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}) + "'>");
-    $("#resultsContainer").wrap('<a href="' + generateLink(place) + '" />')
-}
-
-function createPhotoMarker(place) {
-    var photos = place.photos;
-    if (!photos) {
-      return;
-    }
-  
-    var marker = new google.maps.Marker({
-      map: map,
-      position: place.geometry.location,
-      title: place.name,
-      icon: photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50})
+    $("#address").wrap('<a href="' + generateLink(place) + '" />');
+    $("#results").append("<div id='tryAgain'>Pick Another?</div>");
+    $("#tryAgain").click(function() {
+        $("#results").remove();
+        marker.setMap(null);
+        searchPlaces();
     });
+    map.setCenter(place.geometry.location);
 }
   
 function createMarker(place) {
-    var marker = new google.maps.Marker({
+    marker = new google.maps.Marker({
         map: map,
         position: place.geometry.location
     });
@@ -61,6 +55,15 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                             'Error: The Geolocation service failed.' :
                             'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(map);
+}
+
+function searchPlaces() {
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+        location: center,
+        radius: 2000,
+        type: ['restaurant']
+    }, callback);
 }
 
 function initMap() {
@@ -194,7 +197,7 @@ function initMap() {
         {name: 'Go Map'}
     );    
 
-    var center = {lat: 0, lng: 0};
+    center = {lat: 0, lng: 0};
     infoWindow = new google.maps.InfoWindow();
 
     //Try HTML% geolocation
@@ -216,12 +219,6 @@ function initMap() {
             map.mapTypes.set('styled_map', styledMapType);
             map.setMapTypeId('styled_map');
         
-            var service = new google.maps.places.PlacesService(map);
-            service.nearbySearch({
-                location: center,
-                radius: 2000,
-                type: ['restaurant']
-            }, callback);
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
         });

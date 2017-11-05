@@ -16,6 +16,31 @@ html, body {
     height: 100%;
 }
 
+#searchButton {
+    width: 300px;
+    position: absolute;
+    top: 45%;
+    left: 40%;
+    z-index: 999;
+    padding: 20px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 40px;
+    background-color: greenyellow;
+    text-align: center;
+}
+
+#tryAgain {
+    width: 250px;
+    z-index: 999;
+    padding: 20px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 40px;
+    background-color: greenyellow;
+    text-align: center;
+}
+
 #results {
     position: absolute;
     width: 40%;

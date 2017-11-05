@@ -4,5 +4,9 @@ function setCopyrightFooter() {
 }
 
 $(document).ready(function () {
+    $("#searchButton").click(function() {
+        searchPlaces();
+        $("#searchButton").remove();
+    });
     setCopyrightFooter();
 });
