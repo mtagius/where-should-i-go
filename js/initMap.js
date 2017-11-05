@@ -28,11 +28,7 @@ function generateLink(place) {
     return "https://www.google.com/maps/search/?api=1&query=" + name + "&query_place_id=" + place.id;
 }
 
-function displayMainLocation(place) {
-    var directionDisplay = new google.maps.DirectionsRenderer({
-        map: map
-    });
-    
+function displayMainLocation(place) {    
     console.log(place.name);
     console.log(place.vicinity);
     console.log(generateLink(place));
