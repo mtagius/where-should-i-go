@@ -29,6 +29,10 @@ function generateLink(place) {
 }
 
 function displayMainLocation(place) {
+    var directionDisplay = new google.maps.DirectionsRenderer({
+        map: map
+    });
+    
     console.log(place.name);
     console.log(place.vicinity);
     console.log(generateLink(place));
@@ -284,6 +288,7 @@ function drawMap() {
             mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
         }
     });
+    
     //Associate the styled map with the MapTypeId and set it to display.
     map.mapTypes.set('styled_map', styledMapType);
     map.setMapTypeId('styled_map');
