@@ -4,21 +4,49 @@ var map, infoWindow;
 function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
-        createMarker(results[i]);
+           createMarker(results[i]);
+           //createPhotoMarker(results[i]);
         }
+        randomPick = results[Math.floor(Math.random() * results.length)];
+        displayMainLocation(randomPick);
     }
+}
+
+function generateLink(place) {
+    name = encodeURIComponent(place.name);
+    return "https://www.google.com/maps/search/?api=1&query=" + name + "&query_place_id=ChIJKxjxuaNqkFQR3CK6O1HNNqY" + place.id;
+}
+
+function displayMainLocation(place) {
+    console.log(place.name);
+    console.log(place.vicinity);
+    console.log(place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500}));
+    console.log(generateLink(place));
+}
+
+function createPhotoMarker(place) {
+    var photos = place.photos;
+    if (!photos) {
+      return;
+    }
+  
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location,
+      title: place.name,
+      icon: photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50})
+    });
 }
   
 function createMarker(place) {
-    var placeLoc = place.geometry.location;
     var marker = new google.maps.Marker({
         map: map,
         position: place.geometry.location
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
+        infoWindow.setContent(place.name);
+        infoWindow.open(map, this);
     });
 }
   
@@ -186,8 +214,8 @@ function initMap() {
             var service = new google.maps.places.PlacesService(map);
             service.nearbySearch({
                 location: center,
-                radius: 1000,
-                type: ['store']
+                radius: 2000,
+                type: ['restaurant']
             }, callback);
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
